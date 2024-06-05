@@ -17,7 +17,7 @@
     "@angular/forms": "^16.2.0",
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
-    "@angular/pwa": "^18.0.2",
+    "@angular/pwa": "^16.0.2",
     "@angular/router": "^16.2.0",
     "@angular/service-worker": "^16.2.0",
     "chart.js": "^4.4.3",
