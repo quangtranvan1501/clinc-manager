@@ -2,27 +2,14 @@
     <img src="assets/images/logo.png" alt="logo" />
   </div>
   <ul nz-menu nzTheme="light" nzMode="inline">
-    <li nz-menu-item>
+    <li nz-menu-item [nzSelected]="selectedNavItem === 'dashboard'" routerLink="/admin">
       <span nz-icon nzType="file"></span>
-      <span>Dashboard</span>
+      <span >Dashboard</span>
     </li>
     <li nz-submenu nzTitle="Quản lý lịch khám" nzIcon="user" [nzOpen]="isOpen === 'shedule'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listShedule'" routerLink="/admin/list-shedule">Danh sách lịch khám</li>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'createShedule'" routerLink="/admin/create-shedule">Tạo lịch khám mới</li>
-      </ul>
-    </li>
-    <li nz-submenu nzTitle="Quản lý dịch vụ" nzIcon="user" [nzOpen]="isOpen === 'service'">
-      <ul>
-        <li nz-menu-item [nzSelected]="selectedNavItem === 'listService'" routerLink="/admin/list-service">Danh sách dịch vụ</li>
-        <li nz-menu-item [nzSelected]="selectedNavItem === 'createService'" routerLink="/admin/create-service">Tạo dịch vụ mới</li>
-      </ul>
-    </li>
-    <li nz-submenu nzTitle="Quản lý bác sĩ" nzIcon="user" [nzOpen]="isOpen === 'doctor'">
-      <ul>
-        <li nz-menu-item [nzSelected]="selectedNavItem === 'listDoctor'" routerLink="/admin/list-doctor" >Danh sách bác sỹ</li>
-        <li nz-menu-item [nzSelected]="selectedNavItem === 'createDoctor'" routerLink="/admin/create-doctor">Tạo tài khoản bác sỹ</li>
-        <li nz-menu-item [nzSelected]="selectedNavItem === 'sheduleDoctor'" routerLink="/admin/shedule-doctor">Lịch làm việc bác sỹ</li>
       </ul>
     </li>
     <li nz-submenu nzTitle="Quản lý hóa đơn" nzIcon="user" [nzOpen]="isOpen === 'order'">
@@ -39,6 +26,24 @@
         <li nz-menu-item [nzSelected]="selectedNavItem === 'changeRecord'" routerLink="/admin/change-medical-record">Chỉnh sửa bệnh án</li> -->
       </ul>
     </li>
+    <li nz-submenu nzTitle="Quản lý dịch vụ" nzIcon="user" [nzOpen]="isOpen === 'service'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listService'" routerLink="/admin/list-service">Danh sách dịch vụ</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'createService'" routerLink="/admin/create-service">Tạo dịch vụ mới</li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Quản lý bác sĩ" nzIcon="user" [nzOpen]="isOpen === 'doctor'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listDoctor'" routerLink="/admin/list-doctor" >Danh sách bác sỹ</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'createDoctor'" routerLink="/admin/create-doctor">Tạo tài khoản bác sỹ</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'sheduleDoctor'" routerLink="/admin/shedule-doctor">Lịch làm việc bác sỹ</li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Quản lý chuyên khoa" nzIcon="user" [nzOpen]="isOpen === 'specialist'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listSpecialist'" routerLink="/admin/list-specialist" >Danh sách khoa</li>
+      </ul>
+    </li>
     <li nz-submenu nzTitle="Quản lý tài khoản" nzIcon="user" [nzOpen]="isOpen === 'user'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listUser'" routerLink="/admin/list-user">Danh sách tài khoản</li>
@@ -46,5 +51,5 @@
         <li nz-menu-item [nzSelected]="selectedNavItem === 'userRole'" routerLink="/admin/user-role">Phân quyền</li>
       </ul>
     </li>
-    <li nz-menu-item>Đăng xuất</li>
+    <li nz-menu-item (click)="logOut()">Đăng xuất</li>
   </ul>

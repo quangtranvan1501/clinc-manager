@@ -14,7 +14,7 @@
 
                 <div class="searchUser" nz-row>
                     <div class="searchItem" style="border-right: 1px solid rgb(8, 84, 44) ;" nz-col nzSpan="12">
-                        
+
                         <div class="searchTitle">Mã bệnh nhân</div>
                         <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width: 400px;">
                             <input type="text" nz-input placeholder="Mã bệnh nhân" [(ngModel)]="idPatient"
@@ -31,7 +31,8 @@
                                 nzTitle="Tên bệnh nhân">{{patients.name}}</nz-descriptions-item>
                             <nz-descriptions-item nzSpan="4"
                                 nzTitle="Giới tính">{{patients.gender}}</nz-descriptions-item>
-                            <nz-descriptions-item nzSpan="4" nzTitle="Địa chỉ">{{patients.address}}</nz-descriptions-item>
+                            <nz-descriptions-item nzSpan="4"
+                                nzTitle="Địa chỉ">{{patients.address}}</nz-descriptions-item>
                         </nz-descriptions>
                     </div>
                     <div class="searchItem" nz-col nzSpan="12">
@@ -50,75 +51,51 @@
                                 nzTitle="Tên bác sỹ">{{doctors.name}}</nz-descriptions-item>
                             <nz-descriptions-item nzSpan="4"
                                 nzTitle="Giới tính">{{doctors.gender}}</nz-descriptions-item>
-                            <nz-descriptions-item nzSpan="4" nzTitle="Địa chỉ">{{doctors.address}}</nz-descriptions-item>
+                            <nz-descriptions-item nzSpan="4"
+                                nzTitle="Địa chỉ">{{doctors.address}}</nz-descriptions-item>
                         </nz-descriptions>
                     </div>
+                    <div class="searchItem" nz-col nzSpan="12" style="border-right: 1px solid rgb(8, 84, 44) ;">
+                        <div class="searchTitle">Nhập dịch vụ</div>
+                        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton3" style="width: 400px;">
+                            <input type="text" nz-input placeholder="Mã dịch vụ" [(ngModel)]="idService" />
+                        </nz-input-group>
+                        <ng-template #suffixIconButton3>
+                            <button nz-button nzType="primary" nzSearch><span nz-icon nzType="plus"
+                                    (click)="getServices()"></span></button>
+                        </ng-template>
+                    </div>
+                    <div class="searchItem" nz-col nzSpan="12">
+                        <div class="searchTitle">Vui lòng chọn thời gian: </div>
+                        <nz-date-picker nzFormat="dd/MM/yyyy HH:mm" [nzDisabledDate]="disabledDate"
+                            (ngModelChange)="onTimeChange($event)" [(ngModel)]="sheduleDay"
+                            [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }"></nz-date-picker>
+                    </div>
                 </div>
-
-                <form nz-form nz-row nzJustify="start" [formGroup]="validateFormRegister" (ngSubmit)="register()">
-                    <nz-form-item nz-col [nzSpan]="12">
-                        <div nz-row nzJustify="start">
-                            <nz-form-label [nzSpan]="9" nzRequired>Mã bệnh nhân</nz-form-label>
-                            <nz-form-control [nzSpan]="15">
-                                <input nz-input formControlName="patientId" />
-                            </nz-form-control>
-                        </div>
-                    </nz-form-item>
-                    <nz-form-item nz-col [nzSpan]="12">
-                        <div nz-row>
-                            <nz-form-label [nzSpan]="8" nzRequired>Tên bệnh nhân</nz-form-label>
-                            <nz-form-control [nzSpan]="15">
-                                <input nz-input formControlName="patient" />
-                            </nz-form-control>
-                        </div>
-                    </nz-form-item>
-                    <nz-form-item nz-col [nzSpan]="12">
-                        <div nz-row nzJustify="start">
-                            <nz-form-label [nzSpan]="9" nzRequired>Mã bác sỹ</nz-form-label>
-                            <nz-form-control [nzSpan]="15">
-                                <input nz-input formControlName="doctorId" [disabled]="true"/>
-                            </nz-form-control>
-                        </div>
-                    </nz-form-item>
-                    <nz-form-item nz-col [nzSpan]="12">
-                        <div nz-row nzJustify="start">
-                            <nz-form-label [nzSpan]="8" nzRequired>Tên bác sỹ</nz-form-label>
-                            <nz-form-control [nzSpan]="15">
-                                <input nz-input formControlName="doctor" />
-                            </nz-form-control>
-                        </div>
-                    </nz-form-item>
-                    <nz-form-item nz-col [nzSpan]="12">
-                        <div nz-row>
-                            <nz-form-label [nzSpan]="9" nzRequired>Mã dịch vụ</nz-form-label>
-                            <nz-form-control [nzSpan]="15">
-                                <input nz-input formControlName="serviceId" />
-                            </nz-form-control>
-                        </div>
-                    </nz-form-item>
-                    <nz-form-item nz-col [nzSpan]="12">
-                        <div nz-row>
-                            <nz-form-label [nzSpan]="8" nzRequired>Tên dịch vụ</nz-form-label>
-                            <nz-form-control [nzSpan]="15">
-                                <input nz-input formControlName="service" />
-                            </nz-form-control>
-                        </div>
-                    </nz-form-item>
-                    <nz-form-item nz-col [nzSpan]="12">
-                        <div nz-row>
-                            <nz-form-label [nzSpan]="9" nzRequired>Ngày khám</nz-form-label>
-                            <nz-form-control [nzSpan]="15">
-                                <nz-date-picker nzFormat="dd/MM/yyyy HH:mm" nzShowTime
-                                formControlName="day"></nz-date-picker>
-                            </nz-form-control>
-                        </div>
-                    </nz-form-item>
-                    <nz-form-item nz-col [nzSpan]="24">
-                        <nz-form-control [nzOffset]="20" [nzSpan]="12">
-                            <button nz-button nzType="primary">Đăng ký</button>
-                        </nz-form-control>
-                    </nz-form-item>
-                </form>
+                <nz-table style="margin: 16px;" #basicTable [nzData]="services" [nzBordered]="true"
+                    [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th>Mã dịch vụ</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Số lượng</th>
+                            <th>Chuyên khoa</th>
+                            <th>Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data; let index = index">
+                            <td>{{ data.serviceId }}</td>
+                            <td>{{ data.name }}</td>
+                            <td>1</td>
+                            <td>{{ data.specialist.name }}</td>
+                            <td>{{ data.price | priceFormat }}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div class="btn-create">
+                    <button nz-button nzType="primary" (click)="createShedule()">Tạo hóa đơn</button>
+                </div>
             </div>
         </nz-content>
         <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>

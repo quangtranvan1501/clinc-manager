@@ -27,13 +27,16 @@
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
-              }
+              },
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/theme.less",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -49,7 +52,13 @@
                   "maximumError": "5mb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/service/environments/environments.ts",
+                  "with": "src/app/service/environments/environments.prod.ts"
+                }
+              ]
             },
             "development": {
               "buildOptimizer": false,
@@ -57,7 +66,13 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/app/service/environments/environments.ts",
+                  "with": "src/app/service/environments/environments.dev.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -90,7 +105,8 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/styles.css"

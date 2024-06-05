@@ -46,6 +46,8 @@ import { CreateSheduleComponent } from '../shedule-manager/create-shedule/create
 import { ListOrderComponent } from '../order-manager/list-order/list-order.component';
 import { CreateOrderComponent } from '../order-manager/create-order/create-order.component';
 import { ChangeOrderComponent } from '../order-manager/change-order/change-order.component';
+import { ListSpecialistComponent } from '../specialist-manager/list-specialist/list-specialist.component';
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   imports: [
     WelcomeRoutingModule,
@@ -74,7 +76,8 @@ import { ChangeOrderComponent } from '../order-manager/change-order/change-order
     NzPaginationModule,
     NzTagModule,
     NzSelectModule,
-    NzTimePickerModule
+    NzTimePickerModule,
+    NgChartsModule
   ],
   declarations: [
     WelcomeComponent,
@@ -95,7 +98,8 @@ import { ChangeOrderComponent } from '../order-manager/change-order/change-order
     CreateSheduleComponent,
     ListOrderComponent,
     CreateOrderComponent,
-    ChangeOrderComponent
+    ChangeOrderComponent,
+    ListSpecialistComponent
   ],
   exports: [WelcomeComponent],
   providers: [

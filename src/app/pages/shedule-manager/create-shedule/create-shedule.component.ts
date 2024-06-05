@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, ValidatorFn, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { User } from 'src/app/@types';
+import { Shedule, User } from 'src/app/@types';
 import { AppService } from 'src/app/service/app.service';
 import { AuthService } from 'src/app/service/auth.service';
+import { differenceInCalendarDays, setHours } from 'date-fns';
 
 @Component({
   selector: 'app-create-shedule',
@@ -21,6 +22,13 @@ export class CreateSheduleComponent{
   idPatient: string = '';
   idDoctor: string = '';
   idService: string = '';
+  sheduleDay: Date = new Date();
+  isDisabled = true;  
+  today = new Date();
+  timeDefaultValue = setHours(new Date(), 0);
+
+  disabledDate = (current: Date): boolean =>
+    differenceInCalendarDays(current, this.today) < 0;
 
   doctors:any ={
     id: '',
@@ -44,12 +52,7 @@ export class CreateSheduleComponent{
     address: '',
   };
 
-  services:any ={
-    id: '',
-    name: '',
-    price: '',
-    unit: '',
-  };
+  services:any =[]
 
   getPatiens() {
     this.appService.getById(this.idPatient, '/users').subscribe(response => {
@@ -70,7 +73,7 @@ export class CreateSheduleComponent{
   getServices() {
     this.appService.getById(this.idService, '/services').subscribe(response => {
       if (response.body && response.body.code == 200) {
-        this.services = response.body.data;
+        this.services = [response.body.data];
       }
     });
   }
@@ -93,34 +96,63 @@ export class CreateSheduleComponent{
     day: ['', [Validators.required]],
   });
 
+  createShedule(){
+    const shedule: Partial<Shedule> = {
+      patient: this.patients.id,
+      service: this.services[0].id,
+      day: this.sheduleDay.toISOString(),
+      ...(this.doctors ? { doctor: this.doctors.id } : {})
+    }
+    console.log(shedule)
+    this.appService.post<Shedule, Partial<Shedule>>(shedule, '/examinationSchedules').subscribe(response => {
+      if (!response.body) {
+        return;
+      }
+      if (response.body.code == 201) {
+        this.isDisabled = false
+        this.doctors = {
+          id: '',
+          name: '',
+          userId: '',
+          gender: '',
+          birthday: '',
+          address: '',
+          specialist: {
+            id: '',
+            name: '',
+          }
+        };
+        this.patients = {
+          id: '',
+          name: '',
+          userId: '',
+          birthday: '',
+          address: '',
+        }
+        this.services = []
+        return this.message.success(response.body.message)
+      }
 
-  register() {
-    if (this.validateFormRegister.valid) {
-      const formData: { [key: string]: any } = Object.keys(this.validateFormRegister.controls)
-        .filter(key => key !== 'confirm')
-        .reduce((acc: any, key) => {
-          acc[key] = (this.validateFormRegister.controls as { [key: string]: any })[key].value;
-          return acc;
-        }, {});
-      this.authService.register(formData).subscribe(response => {
-        if (!response.body) {
-          return this.message.error('Unknown error occurred.');
-        }
-        if (response.body.code == 201) {
-          return this.message.success(response.body.message)
-        }
-        if (response.body && response.body.message) {
-          return this.message.error(response.body.message);
-        }
-        return this.message.error('Unknown error occurred.');
-      })
+      if (response.body && response.body.message) {
+        return this.message.error(response.body.message)
+      }
+      return this.message.error('Đã có lỗi xảy ra vui lòng thử lại.')
+
+    } , error => {
+      if (error.error && error.error.message) {
+        return this.message.error(error.error.message);
+      }
+      return this.message.error('Đã có lỗi xảy ra vui lòng thử lại');
+
+    });
+  }
+
+  onTimeChange(time: any): void {
+    if (time) {
+      this.isDisabled = false
     } else {
-      Object.values(this.validateFormRegister.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+      this.isDisabled = true
     }
   }
+
 }

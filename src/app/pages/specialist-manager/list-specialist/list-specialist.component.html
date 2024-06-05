@@ -1,0 +1,108 @@
+<nz-layout class="layout">
+    <nz-sider>
+        <app-nav-bar routerNav="listSpecialist" isSub="specialist"></app-nav-bar>
+    </nz-sider>
+    <nz-layout class="right-layout">
+        <nz-header>
+            <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <div class="titlePage">
+                    Danh sách chuyên khoa
+                    <div>
+                        <button nz-button nzType="primary" (click)="showModelCreate()"><span nz-icon nzType="plus"
+                                nzTheme="outline"></span> Tạo mới</button>
+                    </div>
+                </div>
+                <div class="searchUser">
+                    <div class="searchTitle">Tìm kiếm</div>
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width: 400px;">
+                        <input type="text" nz-input placeholder="Mã chuyên khoa" [(ngModel)]="inputSearch" (keyup.enter)="searchSpecialist()"/>
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search" (click)="searchSpecialist()"></span></button>
+                    </ng-template>
+                </div>
+                <nz-table #basicTable [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th nxWidth="60px">STT</th>
+                            <th>Mã chuyên khoa</th>
+                            <th>Tên khoa</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data; let index = index">
+                            <td>{{ index + 1 + (pageIndex - 1) * pageSize}}</td>
+                            <td>{{ data.specialistId }}</td>
+                            <td>{{ data.name }}</td>
+                            <td>
+                                <button nz-button nzType="primary" nzSize="small" (click)="showModal(data)">Chỉnh
+                                    sửa</button>
+                                <button nz-button nzDanger nzSize="small" (click)="confirmDelete(data)">Xóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div class="pagination">
+                    <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="total"
+                        [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="changePageIndex($event)"></nz-pagination>
+                    <ng-template #rangeTemplate let-range="range" let-total>
+                        {{ range[0] }}-{{ range[1] }} of {{ total }} khoa
+                    </ng-template>
+                </div>
+            </div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+</nz-layout>
+
+<nz-modal nzWidth="50%" [(nzVisible)]="isChangeInfo" nzTitle="Thông tin khoa" [nzFooter]="modalFooter"
+    (nzOnCancel)="cancel()">
+    <ng-container *nzModalContent>
+        <form nz-form nz-row nzJustify="start" [formGroup]="validateFormRegister">
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label nz-col [nzSpan]="8" nzRequired>Mã khoa</nz-form-label>
+                    <nz-form-control nz-col [nzSpan]="15" nzValidatingTip="Validating...">
+                        <input nz-input formControlName="specialistId" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Tên khoa</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input nz-input formControlName="name" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+        </form>
+    </ng-container>
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" nzDanger (click)="cancel()">Hủy</button>
+        <button nz-button nzType="primary" (click)="changeUser()" [nzLoading]="isConfirmLoading">Thay đổi</button>
+    </ng-template>
+</nz-modal>
+
+<nz-modal nzWidth="50%" [(nzVisible)]="isCreate" nzTitle="Thêm mới khoa" [nzFooter]="modalFooter2"
+    (nzOnCancel)="cancel()">
+    <ng-container *nzModalContent>
+        <form nz-form nz-row nzJustify="start" [formGroup]="validateFormRegister">
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Tên khoa</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input nz-input formControlName="name" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+        </form>
+    </ng-container>
+    <ng-template #modalFooter2>
+        <button nz-button nzType="primary" nzDanger (click)="cancelCreate()">Hủy</button>
+        <button nz-button nzType="primary" (click)="createSpecialist()" [nzLoading]="isConfirmLoading">Tạo mới</button>
+    </ng-template>
+</nz-modal>

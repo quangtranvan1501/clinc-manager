@@ -27,6 +27,10 @@ export class NavBarComponent implements OnInit, OnChanges {
     }
   }
 
+  logOut() {
+    this.authService.logout()
+    window.location.reload();
+  }
   ngOnInit(): void {
     this.isLogin = this.authService.isLoggedIn()
   }

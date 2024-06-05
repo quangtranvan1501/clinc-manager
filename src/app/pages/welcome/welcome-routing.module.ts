@@ -17,6 +17,7 @@ import { CreateSheduleComponent } from '../shedule-manager/create-shedule/create
 import { ListOrderComponent } from '../order-manager/list-order/list-order.component';
 import { CreateOrderComponent } from '../order-manager/create-order/create-order.component';
 import { ChangeOrderComponent } from '../order-manager/change-order/change-order.component';
+import { ListSpecialistComponent } from '../specialist-manager/list-specialist/list-specialist.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -36,8 +37,8 @@ const routes: Routes = [
   { path: 'list-order', component: ListOrderComponent},
   { path: 'create-order', component: CreateOrderComponent},
   { path: 'change-order', component: ChangeOrderComponent},
-  { path: 'change-order/:orderId', component: ChangeOrderComponent}
-
+  { path: 'change-order/:orderId', component: ChangeOrderComponent},
+  { path: 'list-specialist', component: ListSpecialistComponent},
 ];
 
 @NgModule({

@@ -62,7 +62,7 @@ button{
 .searchItem{
     padding: 16px;
 }
-.searchLabel{
+.searchTitle, .searchLabel{
     margin-right: 18px;
     font-weight: 600;
     font-size: 18px;
