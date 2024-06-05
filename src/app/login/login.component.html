@@ -1,0 +1,41 @@
+<ng-container>
+    <nz-spin nzTip="Đang xử lý!" [nzSpinning]="isLoading">
+        <div class="login-page">
+            <div class="wapper" nz-row>
+                <div class="login-logo" nz-col>
+                    <img src="assets/images/logo.png" alt="logo" />
+                </div>
+                <form nz-form [formGroup]="validateForm" class="login-form" nz-col (ngSubmit)="submitForm()">
+                    <div class="login-title" nz-row nzJustify="space-evenly">
+                        <div nz-col nzSpan="12" class="title-login">
+                            Đăng nhập</div>
+                    </div>
+                    <ng-container>
+                        <nz-form-item nz-margin="0 10px 0 0">
+                            <nz-form-control nzErrorTip="Username/Email không được bỏ trống!">
+                                <nz-input-group nzPrefixIcon="user">
+                                    <input type="text" nzSize="large" nz-input formControlName="userName"
+                                        placeholder="Username/Email" />
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item nz-margin="0 10px 0 0">
+                            <nz-form-control nzErrorTip="Mật khẩu không được bỏ trống!">
+                                <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
+                                    <input type="{{ passwordVisible ? 'text' : 'password' }}" nzSize="large" nz-input
+                                        formControlName="password" placeholder="Password" />
+                                </nz-input-group>
+                            </nz-form-control>
+                            <ng-template #suffixTemplate>
+                                <span nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                                    (click)="passwordVisible = !passwordVisible"></span>
+                            </ng-template>
+                        </nz-form-item>
+                        <button nz-button class="login-form-button login-form-margin " nzSize="large" nz-margin="0 10px 0 0"
+                            nzType="primary">Đăng nhập</button>
+                    </ng-container>
+                </form>
+            </div>
+        </div>
+    </nz-spin>
+</ng-container>

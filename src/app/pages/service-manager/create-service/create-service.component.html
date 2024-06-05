@@ -1,0 +1,61 @@
+<nz-layout class="layout">
+    <nz-sider>
+        <app-nav-bar routerNav="createService" isSub="service"></app-nav-bar>
+    </nz-sider>
+    <nz-layout class="right-layout">
+        <nz-header>
+            <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <div class="titlePage">
+                    Thêm dịch vụ
+                </div>
+                <form nz-form nz-row nzJustify="start" [formGroup]="validateFormRegister" (ngSubmit)="createService()">
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label nz-col [nzSpan]="8" nzRequired>Tên dịch vụ</nz-form-label>
+                            <nz-form-control nz-col [nzSpan]="15" nzValidatingTip="Validating...">
+                                <input nz-input formControlName="name" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="9" nzRequired>Đơn vị</nz-form-label>
+                            <nz-form-control [nzSpan]="15">
+                                <input nz-input formControlName="unit" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row nzJustify="start">
+                            <nz-form-label [nzSpan]="8" nzRequired>Giá tiền</nz-form-label>
+                            <nz-form-control [nzSpan]="15">
+                                <input nz-input formControlName="price" type="number" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="9" nzRequired>Khoa</nz-form-label>
+                            <nz-form-control [nzSpan]="15">
+                                <nz-select nzPlaceHolder="Chọn khoa" formControlName="specialist">
+                                    <nz-option *ngFor="let specialist of specialistList" [nzLabel]="specialist.name"
+                                        [nzValue]="specialist.id">
+                                    </nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col>
+                        <nz-form-control [nzOffset]="7" [nzSpan]="12">
+                            <button nz-button nzType="primary">Tạo mới</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+</nz-layout>

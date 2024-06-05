@@ -1,0 +1,130 @@
+<nz-layout class="layout">
+    <nz-sider>
+        <app-nav-bar routerNav="createDoctor" isSub="doctor"></app-nav-bar>
+    </nz-sider>
+    <nz-layout class="right-layout">
+        <nz-header>
+            <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <div class="titlePage">
+                    Thêm mới tài khoản
+                </div>
+                <form nz-form nz-row nzJustify="start" [formGroup]="validateFormRegister" (ngSubmit)="register()">
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label nz-col [nzSpan]="8" nzRequired>Username</nz-form-label>
+                            <nz-form-control nz-col [nzSpan]="15" nzValidatingTip="Validating...">
+                                <input nz-input formControlName="username" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="9" nzRequired>SĐT</nz-form-label>
+                            <nz-form-control [nzSpan]="15">
+                                <input nz-input formControlName="phoneNumber" type="number" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="24">
+                        <div nz-row nzJustify="start">
+                            <nz-form-label [nzSpan]="4" nzRequired>E-mail</nz-form-label>
+                            <nz-form-control [nzSpan]="20">
+                                <input nz-input formControlName="email" placeholder="email" type="email" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="8" nzRequired>Password</nz-form-label>
+                            <nz-form-control [nzSpan]="15" nzDisableAutoTips nzErrorTip="Vui lòng nhập mật khẩu!">
+                                <input nz-input type="password" formControlName="password"
+                                    (ngModelChange)="validateConfirmPassword()" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col nzSpan="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="9" nzRequired>Confirm Pass</nz-form-label>
+                            <nz-form-control [nzSpan]="15" nzDisableAutoTips [nzErrorTip]="passwordErrorTpl">
+                                <input nz-input type="password" formControlName="confirm" />
+                                <ng-template #passwordErrorTpl let-control>
+                                    <div *ngIf="control.errors?.required">
+                                        Vui lòng nhập lại mật khẩu!
+                                    </div>
+                                    <div *ngIf="control.errors?.confirm">
+                                        Mật khẩu không trùng khớp!
+                                    </div>
+                                </ng-template>
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="24">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="4" nzRequired>Họ và tên</nz-form-label>
+                            <nz-form-control [nzSpan]="20">
+                                <input nz-input formControlName="name" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="8" nzRequired>Ngày sinh</nz-form-label>
+                            <nz-form-control [nzSpan]="15">
+                                <nz-date-picker formControlName="birthday" nzPlaceHolder="Chọn ngày sinh"
+                                    nzFormat="dd/MM/yyyy"></nz-date-picker>
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="9" nzRequired>Giới tính</nz-form-label>
+                            <nz-form-control [nzSpan]="15">
+                                <nz-radio-group formControlName="gender">
+                                    <label nz-radio nzValue="Male">Nam</label>
+                                    <label nz-radio nzValue="Female">Nữ</label>
+                                </nz-radio-group>
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="8" nzRequired>Chuyên khoa</nz-form-label>
+                            <nz-form-control [nzSpan]="15">
+                                <nz-select nzPlaceHolder="Chọn khoa" formControlName="specialist">
+                                    <nz-option *ngFor="let specialist of specialistList" [nzLabel]="specialist.name"
+                                        [nzValue]="specialist.id">
+                                    </nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="12">
+                        <div nz-row>
+                            <nz-form-label [nzSpan]="9" nzRequired>Phòng làm việc</nz-form-label>
+                            <nz-form-control [nzSpan]="15">
+                                <input nz-input formControlName="positon" type="text" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col [nzSpan]="24">
+                        <div nz-row nzJustify="start">
+                            <nz-form-label [nzSpan]="4" nzRequired>Địa chỉ</nz-form-label>
+                            <nz-form-control [nzSpan]="20">
+                                <input nz-input formControlName="address" type="text" />
+                            </nz-form-control>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-col>
+                        <nz-form-control [nzOffset]="7" [nzSpan]="12">
+                            <button nz-button nzType="primary">Đăng ký</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+</nz-layout>

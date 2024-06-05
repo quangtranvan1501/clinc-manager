@@ -1,0 +1,91 @@
+<nz-layout class="layout">
+    <nz-sider>
+        <app-nav-bar routerNav="createOrder" isSub="order"></app-nav-bar>
+    </nz-sider>
+    <nz-layout class="right-layout">
+        <nz-header>
+            <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <div class="titlePage">
+                    Tạo mới hóa đơn
+                </div>
+                <div class="infoPatient">
+                    <div class="searchUser">
+                        <div class="searchItem">
+                            <div class="searchTitle">Mã bệnh nhân</div>
+                            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width: 400px;">
+                                <input type="text" nz-input placeholder="Mã bệnh nhân" [(ngModel)]="inputSearch"
+                                    (keyup.enter)="searchUser()" />
+                            </nz-input-group>
+                            <ng-template #suffixIconButton>
+                                <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"
+                                        (click)="searchUser()"></span></button>
+                            </ng-template>
+                        </div>
+                        <div class="searchItem">
+                            <div class="searchTitle">Thêm dịch vụ</div>
+                            <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton2" style="width: 400px;">
+                                <input type="text" nz-input placeholder="Mã dịch vụ" [(ngModel)]="serviceSearch" />
+                            </nz-input-group>
+                            <ng-template #suffixIconButton2>
+                                <button nz-button nzType="primary" nzSearch><span nz-icon nzType="plus"
+                                        (click)="searchService()"></span></button>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="infoPatientSearch">
+                        <nz-descriptions nzBordered [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }">
+                            <nz-descriptions-item
+                                nzTitle="Mã bệnh nhân">{{orderItem.patient.userId}}</nz-descriptions-item>
+                            <nz-descriptions-item
+                                nzTitle="Tên bệnh nhân">{{orderItem.patient.name}}</nz-descriptions-item>
+                            <nz-descriptions-item
+                                nzTitle="Giới tính">{{orderItem.patient.gender}}</nz-descriptions-item>
+                            <nz-descriptions-item nzTitle="Địa chỉ">{{orderItem.patient.address}}</nz-descriptions-item>
+                        </nz-descriptions>
+                    </div>
+                </div>
+
+                <h3 style="padding: 16px 16px 0 16px;">Danh sách dịch vụ</h3>
+                <nz-table style="margin: 16px;" #basicTable [nzData]="listOfData" [nzBordered]="true"
+                    [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th nxWidth="60px">STT</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Thành tiền</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data; let index = index">
+                            <td>{{ index + 1 + (pageIndex - 1) * pageSize}}</td>
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.quantity }}</td>
+                            <td>{{ data.price | priceFormat }}</td>
+                            <td>{{ data.price | priceFormat }}</td>
+                            <td>
+                                <button nz-button nzType="primary" nzDanger (click)="cancel(data)">Hủy</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">Giảm giá</td>
+                            <td>{{orderItem.discount ?? 0 | priceFormat}}</td>
+                        <tr>
+                            <td colspan="4">Tổng tiền</td>
+                            <td>{{orderItem.totalAmount | priceFormat}}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div class="btn-create">
+                    <button nz-button nzType="primary" (click)="createOrder()">Tạo hóa đơn</button>
+                </div>
+            </div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+</nz-layout>

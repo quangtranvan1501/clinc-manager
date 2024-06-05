@@ -1,0 +1,157 @@
+<nz-layout class="layout">
+    <nz-sider>
+        <app-nav-bar routerNav="listUser" isSub="user"></app-nav-bar>
+    </nz-sider>
+    <nz-layout class="right-layout">
+        <nz-header>
+            <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <div class="titlePage">
+                    Danh sách tài khoản
+                    <div>
+                        <button nz-button nzType="primary" routerLink="/admin/create-user"><span nz-icon nzType="plus"
+                                nzTheme="outline"></span> Tạo mới</button>
+                    </div>
+                </div>
+                <div class="searchUser">
+                    <div class="searchTitle">Tìm kiếm</div>
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width: 400px;">
+                        <input type="text" nz-input placeholder="Mã tài khoản/Email/Username/Họ và tên" [(ngModel)]="inputSearch" (keyup.enter)="searchUser()"/>
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search" (click)="searchUser()"></span></button>
+                    </ng-template>
+                </div>
+                <nz-table #basicTable [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th nxWidth="60px">STT</th>
+                            <th>Mã tài khoản</th>
+                            <th>Tên tài khoản</th>
+                            <th>Họ và tên</th>
+                            <th>Email</th>
+                            <th>Trạng thái</th>
+                            <th>Xác nhận email</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data; let index = index">
+                            <td>{{ index + 1 + (pageIndex - 1) * pageSize}}</td>
+                            <td>{{ data.userId }}</td>
+                            <td>{{ data.username }}</td>
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.email }}</td>
+                            <td>
+                                <nz-tag *ngIf="data.status === '1'" nzColor="success">Hoạt động</nz-tag>
+                                <nz-tag *ngIf="data.status === '0'" nzColor="error">Vô hiệu hóa</nz-tag>
+                            </td>
+                            <td>
+                                <nz-tag *ngIf="data.isEmailVerified" nzColor="success">Đã xác nhận</nz-tag>
+                                <nz-tag *ngIf="!data.isEmailVerified" nzColor="error">Chưa xác nhận</nz-tag>
+                            </td>
+                            <td>
+                                <button nz-button nzType="primary" nzSize="small" (click)="showModal(data)">Chỉnh
+                                    sửa</button>
+                                <button nz-button nzDanger nzSize="small" (click)="confirmDelete(data)">Xóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div class="pagination">
+                    <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="total"
+                        [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="changePageIndex($event)"></nz-pagination>
+                    <ng-template #rangeTemplate let-range="range" let-total>
+                        {{ range[0] }}-{{ range[1] }} of {{ total }} user
+                    </ng-template>
+                </div>
+            </div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+</nz-layout>
+
+<nz-modal nzWidth="50%" [(nzVisible)]="isChangeInfo" nzTitle="Thông tin cá nhân" [nzFooter]="modalFooter"
+    (nzOnCancel)="cancel()">
+    <ng-container *nzModalContent>
+        <form nz-form nz-row nzJustify="start" [formGroup]="validateFormRegister">
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label nz-col [nzSpan]="8" nzRequired>Username</nz-form-label>
+                    <nz-form-control nz-col [nzSpan]="15" nzValidatingTip="Validating...">
+                        <input nz-input formControlName="username" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Họ và tên</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input nz-input formControlName="name" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="24">
+                <div nz-row nzJustify="start">
+                    <nz-form-label [nzSpan]="4" nzRequired>E-mail</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <input nz-input formControlName="email" placeholder="email" type="email" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="8" nzRequired>SĐT</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input nz-input formControlName="phoneNumber" type="number" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Ngày sinh</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-date-picker formControlName="birthday" nzPlaceHolder="Chọn ngày sinh"
+                            nzFormat="dd/MM/yyyy"></nz-date-picker>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="8" nzRequired>Xác nhận email</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-radio-group formControlName="isEmailVerified">
+                            <label nz-radio nzValue="true">Đã xác nhận</label>
+                            <label nz-radio nzValue="false">Chưa xác nhận</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Giới tính</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-radio-group formControlName="gender">
+                            <label nz-radio nzValue="Male">Nam</label>
+                            <label nz-radio nzValue="Female">Nữ</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="24">
+                <div nz-row nzJustify="start">
+                    <nz-form-label [nzSpan]="4" nzRequired>Địa chỉ</nz-form-label>
+                    <nz-form-control [nzSpan]="20">
+                        <input nz-input formControlName="address" type="text" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+        </form>
+    </ng-container>
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" nzDanger (click)="cancel()">Hủy</button>
+        <button nz-button nzType="primary" (click)="changeUser()" [nzLoading]="isConfirmLoading">Thay đổi</button>
+    </ng-template>
+</nz-modal>

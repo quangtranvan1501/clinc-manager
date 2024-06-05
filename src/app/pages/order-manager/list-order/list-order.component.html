@@ -1,0 +1,137 @@
+<nz-layout class="layout">
+    <nz-sider>
+        <app-nav-bar routerNav="listOrder" isSub="order"></app-nav-bar>
+    </nz-sider>
+    <nz-layout class="right-layout">
+        <nz-header>
+            <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <div class="titlePage">
+                    Danh sách hóa đơn
+                    <div>
+                        <button nz-button nzType="primary" routerLink="/admin/create-shedule"><span nz-icon
+                                nzType="plus" nzTheme="outline"></span> Tạo mới</button>
+                    </div>
+                </div>
+                <div class="searchUser">
+                    <div class="searchItem">
+                        <div class="searchTitle">Tìm kiếm</div>
+                        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width: 400px;">
+                            <input type="text" nz-input placeholder="Mã hóa đơn" [(ngModel)]="inputSearch"
+                                (keyup.enter)="searchShedule()" />
+                        </nz-input-group>
+                        <ng-template #suffixIconButton>
+                            <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"
+                                    (click)="searchShedule()"></span></button>
+                        </ng-template>
+                    </div>
+                    <div class="searchItem">
+                        <div class="searchLabel">Ngày tạo đơn</div>
+                        <div class="searchInput">
+                            <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"
+                                nzFormat="dd/MM/yyyy"></nz-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <nz-table #basicTable [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th nxWidth="60px">STT</th>
+                            <th>Mã đơn</th>
+                            <th>Tên bệnh nhân</th>
+                            <th>Ngày tạo đơn</th>
+                            <th>Giảm giá</th>
+                            <th>Tổng tiền</th>
+                            <th nzColumnKey="status" [nzFilters]="filterStatus" [nzFilterFn]="true"
+                                [nzFilterMultiple]="false" (nzFilterChange)="onQueryParamsChange($event)">Trạng thái
+                            </th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data; let index = index">
+                            <td>{{ index + 1 + (pageIndex - 1) * pageSize}}</td>
+                            <td>{{ data.orderId }}</td>
+                            <td>{{ data.patient.name }}</td>
+                            <td>{{ data.orderDate | date : 'dd/MM/yyyy HH:mm'}}</td>
+                            <td>{{ data.discount | priceFormat}}</td>
+                            <td>{{ data.totalAmount | priceFormat }}</td>
+                            <td>
+                                <nz-tag *ngIf="data.status === '1'" nzColor="success">Đã thanh toán</nz-tag>
+                                <nz-tag *ngIf="data.status === '0'" nzColor="processing">Chưa thanh toán</nz-tag>
+                                <nz-tag *ngIf="data.status === '-1'" nzColor="error">Đã hủy</nz-tag>
+                            <td>
+                                <button nz-button nzType="primary" nzSize="small" (click)="showModal(data)">Xem chi
+                                    tiết</button>
+                                <button nz-button nzType="primary" nzSize="small" routerLink="/admin/change-order/{{data.orderId}}">Chỉnh
+                                    sửa</button>
+                                <button nz-button nzDanger nzSize="small" (click)="confirmDelete(data)">Xóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div class="pagination">
+                    <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="total"
+                        [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="changePageIndex($event)"></nz-pagination>
+                    <ng-template #rangeTemplate let-range="range" let-total>
+                        {{ range[0] }}-{{ range[1] }} of {{ total }} user
+                    </ng-template>
+                </div>
+            </div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+</nz-layout>
+
+<nz-modal nzWidth="70%" [(nzVisible)]="isChangeInfo" nzTitle="Thông tin hóa đơn" [nzFooter]="modalFooter"
+    (nzOnCancel)="cancel()">
+    <ng-container *nzModalContent>
+        <nz-descriptions nzBordered [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }">
+            <nz-descriptions-item nzTitle="Mã hóa đơn">{{orderItem.orderId}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Trạng thái">
+                <nz-tag *ngIf="orderItem.status === '1'" nzColor="success">Đã thanh toán</nz-tag>
+                <nz-tag *ngIf="orderItem.status === '0'" nzColor="processing">Chưa thanh toán</nz-tag>
+                <nz-tag *ngIf="orderItem.status === '-1'" nzColor="error">Đã hủy</nz-tag>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Mã bệnh nhân">{{orderItem.patient.userId}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Tên bệnh nhân">{{orderItem.patient.name}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Giới tính">{{orderItem.patient.gender}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Địa chỉ">{{orderItem.patient.address}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Ngày khám">{{orderItem.orderDate | date : 'dd/MM/yyyy HH:mm'}}</nz-descriptions-item>
+        </nz-descriptions>
+        <h3 style="padding: 16px 16px 0 16px;">Danh sách dịch vụ</h3>
+        <nz-table style="margin: 16px;" #basicTable [nzData]="orderItem.orderService" [nzBordered]="true" [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th nxWidth="60px">STT</th>
+                    <th>Tên dịch vụ</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data; let index = index">
+                    <td>{{ index + 1 + (pageIndex - 1) * pageSize}}</td>
+                    <td>{{ data.service.name }}</td>
+                    <td>{{ data.quantity }}</td>
+                    <td>{{ data.service.price | priceFormat }}</td>
+                    <td>{{ data.service.price | priceFormat }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">Giảm giá</td>
+                    <td>{{orderItem.discount | priceFormat}}</td>
+                <tr>
+                    <td colspan="4">Tổng tiền</td>
+                    <td>{{orderItem.totalAmount | priceFormat}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </ng-container>
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" nzDanger (click)="cancel()">Hủy</button>
+        <button nz-button nzType="primary" (click)="changeUser()" [nzLoading]="isConfirmLoading">Thay đổi</button>
+    </ng-template>
+</nz-modal>

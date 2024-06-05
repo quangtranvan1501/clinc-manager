@@ -1,0 +1,50 @@
+<div class="logo">
+    <img src="assets/images/logo.png" alt="logo" />
+  </div>
+  <ul nz-menu nzTheme="light" nzMode="inline">
+    <li nz-menu-item>
+      <span nz-icon nzType="file"></span>
+      <span>Dashboard</span>
+    </li>
+    <li nz-submenu nzTitle="Quản lý lịch khám" nzIcon="user" [nzOpen]="isOpen === 'shedule'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listShedule'" routerLink="/admin/list-shedule">Danh sách lịch khám</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'createShedule'" routerLink="/admin/create-shedule">Tạo lịch khám mới</li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Quản lý dịch vụ" nzIcon="user" [nzOpen]="isOpen === 'service'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listService'" routerLink="/admin/list-service">Danh sách dịch vụ</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'createService'" routerLink="/admin/create-service">Tạo dịch vụ mới</li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Quản lý bác sĩ" nzIcon="user" [nzOpen]="isOpen === 'doctor'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listDoctor'" routerLink="/admin/list-doctor" >Danh sách bác sỹ</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'createDoctor'" routerLink="/admin/create-doctor">Tạo tài khoản bác sỹ</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'sheduleDoctor'" routerLink="/admin/shedule-doctor">Lịch làm việc bác sỹ</li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Quản lý hóa đơn" nzIcon="user" [nzOpen]="isOpen === 'order'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listOrder'" routerLink="/admin/list-order">Danh sách hóa đơn</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'createOrder'" routerLink="/admin/create-order">Tạo hóa đơn</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'changeOrder'" routerLink="/admin/change-order">Chỉnh sửa hóa đơn</li>
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Quản lý bệnh án" nzIcon="user" [nzOpen]="isOpen === 'record'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listRecord'" routerLink="/admin/list-medical-record">Danh sách bệnh án</li>
+        <!-- <li nz-menu-item [nzSelected]="selectedNavItem === 'createRecord'" routerLink="/admin/create-medical-record">Tạo bệnh án mới</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'changeRecord'" routerLink="/admin/change-medical-record">Chỉnh sửa bệnh án</li> -->
+      </ul>
+    </li>
+    <li nz-submenu nzTitle="Quản lý tài khoản" nzIcon="user" [nzOpen]="isOpen === 'user'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listUser'" routerLink="/admin/list-user">Danh sách tài khoản</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem ==='createUser'" routerLink="/admin/create-user">Tạo tài khoản</li>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'userRole'" routerLink="/admin/user-role">Phân quyền</li>
+      </ul>
+    </li>
+    <li nz-menu-item>Đăng xuất</li>
+  </ul>

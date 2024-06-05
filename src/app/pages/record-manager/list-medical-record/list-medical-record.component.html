@@ -1,0 +1,160 @@
+<nz-layout class="layout">
+    <nz-sider>
+        <app-nav-bar routerNav="listRecord" isSub="record"></app-nav-bar>
+    </nz-sider>
+    <nz-layout class="right-layout">
+        <nz-header>
+            <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <div class="titlePage">
+                    Danh sách bệnh án
+                </div>
+                <div class="searchUser">
+                    <div class="searchTitle">Tìm kiếm</div>
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width: 400px;">
+                        <input type="text" nz-input placeholder="Mã bệnh án" [(ngModel)]="inputSearch" (keyup.enter)="searchUser()"/>
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search" (click)="searchUser()"></span></button>
+                    </ng-template>
+                </div>
+                <nz-table #basicTable [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã bệnh án</th>
+                            <th>Tên bệnh nhân</th>
+                            <th>Tên bác sỹ</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Ngày khám</th>
+                            <th>Chẩn đoán</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data ; let index = index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{data.medicalRecordId}}</td>
+                            <td>{{ data.patient.name }}</td>
+                            <td>{{ data.doctor }}</td>
+                            <td>{{data.service}}</td>
+                            <td>{{data.day | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{ data.diagnose }}</td>
+                            <td>
+                                <button class="btn-view" nz-button nzType="default"
+                                    (click)="viewPrescription(data.medicalRecordId)">Xem</button>
+                                <button nz-button nzType="primary" nzGhost
+                                    (click)="editMedicalRecord(data)">Sửa</button>
+                                <button nz-button nzDanger nzType="default" (click)="confirmDelete(data)">Xóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div class="pagination">
+                    <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="total"
+                        [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="changePageIndex($event)"></nz-pagination>
+                    <ng-template #rangeTemplate let-range="range" let-total>
+                        {{ range[0] }}-{{ range[1] }} of {{ total }} user
+                    </ng-template>
+                </div>
+            </div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+</nz-layout>
+
+<nz-modal [(nzVisible)]="isView" nzTitle='Thông tin bệnh án {{recordView.medicalRecordId}}' (nzOnCancel)="closeView()"
+    [nzFooter]="modalFooter" [nzStyle]="{'width': '80%'}">
+    <ng-container *nzModalContent>
+        <nz-descriptions nzBordered>
+            <nz-descriptions-item nzTitle="Mã bệnh nhân:"
+                [nzSpan]="2">{{recordView.patient.userId}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Họ và tên:" [nzSpan]="2">{{recordView.patient.name}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Giới tính:" [nzSpan]="2">{{recordView.patient.gender}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Ngày sinh:" [nzSpan]="2">{{recordView.patient.birthday | date: 'dd/MM/yyyy'
+                }}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Địa chỉ:" [nzSpan]="2">{{recordView.patient.address}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Tên dịch vụ:" [nzSpan]="2">{{recordView.service.name}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Mã bác sỹ:" [nzSpan]="2">{{recordView.doctor.userId}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Tên bác sỹ:" [nzSpan]="2">{{recordView.doctor.name}}</nz-descriptions-item>
+            
+            <nz-descriptions-item nzTitle="Ngày khám:" [nzSpan]="2">{{recordView.day | date: 'dd/MM/yyyy'
+                }}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Chẩn đoán:" [nzSpan]="2">{{recordView.diagnose}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Triệu chứng:" [nzSpan]="2">{{recordView.symptom}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Kết luận:" [nzSpan]="2">{{recordView.testResults}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Chỉ định:" [nzSpan]="2">{{recordView.prescription}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Ghi chú:" [nzSpan]="2">{{recordView.note}}</nz-descriptions-item>
+        </nz-descriptions>
+    </ng-container>
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" (click)="closeView()">OK</button>
+    </ng-template>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isEdit" nzTitle="Chỉnh sửa bệnh án" (nzOnCancel)="closeEdit()" [nzFooter]="modalFooterEdit"
+    [nzStyle]="{'width': '80%'}">
+    <ng-container *nzModalContent>
+        <nz-descriptions nzBordered>
+            <nz-descriptions-item nzTitle="Mã bệnh án:"
+                [nzSpan]="2">{{recordView.medicalRecordId}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Họ và tên:" [nzSpan]="2">{{recordView.patient.name}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Giới tính:" [nzSpan]="2">{{recordView.patient.gender}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Ngày sinh:" [nzSpan]="2">{{recordView.patient.birthday | date: 'dd/MM/yyyy'
+                }}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Địa chỉ:" [nzSpan]="2">{{recordView.patient.address}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Tên dịch vụ:" [nzSpan]="2">{{recordView.service}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Ngày khám:" [nzSpan]="2">{{recordView.day | date: 'dd/MM/yyyy'
+                }}</nz-descriptions-item>
+        </nz-descriptions>
+        <form nz-form nz-row nzJustify="start" [formGroup]="recordForm">
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label nz-col [nzSpan]="6" nzRequired>Chuẩn đoán</nz-form-label>
+                    <nz-form-control nz-col [nzSpan]="14" nzErrorTip="Chuẩn đoán không được để trống">
+                        <textarea nz-input formControlName="diagnose">{{recordView.diagnose}}</textarea>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label nz-col [nzSpan]="6" nzRequired>Triệu chứng</nz-form-label>
+                    <nz-form-control nz-col [nzSpan]="14" nzErrorTip="Triệu chứng không được để trống">
+                        <textarea nz-input formControlName="symptom">{{recordView.symptom}}</textarea>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label nz-col [nzSpan]="6" nzRequired>Kết luận</nz-form-label>
+                    <nz-form-control nz-col [nzSpan]="14" nzErrorTip="Kết luận không được để trống">
+                        <textarea nz-input formControlName="testResults">{{recordView.testResults}}</textarea>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label nz-col [nzSpan]="6">Chỉ định</nz-form-label>
+                    <nz-form-control nz-col [nzSpan]="14">
+                        <textarea nz-input formControlName="prescription">{{recordView.prescription}}</textarea>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label nz-col [nzSpan]="6">Ghi chú</nz-form-label>
+                    <nz-form-control nz-col [nzSpan]="14">
+                        <textarea nz-input formControlName="note">{{recordView.note}}</textarea>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+
+        </form>
+    </ng-container>
+    <ng-template #modalFooterEdit>
+        <button nz-button nzType="primary" (click)="editRecord()">OK</button>
+        <button nz-button nzType="default" (click)="closeEdit()">Hủy</button>
+    </ng-template>
+</nz-modal>
