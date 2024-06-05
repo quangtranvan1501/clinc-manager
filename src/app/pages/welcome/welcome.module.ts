@@ -47,7 +47,7 @@ import { ListOrderComponent } from '../order-manager/list-order/list-order.compo
 import { CreateOrderComponent } from '../order-manager/create-order/create-order.component';
 import { ChangeOrderComponent } from '../order-manager/change-order/change-order.component';
 import { ListSpecialistComponent } from '../specialist-manager/list-specialist/list-specialist.component';
-import { NgChartsModule } from 'ng2-charts';
+
 @NgModule({
   imports: [
     WelcomeRoutingModule,
@@ -77,7 +77,6 @@ import { NgChartsModule } from 'ng2-charts';
     NzTagModule,
     NzSelectModule,
     NzTimePickerModule,
-    NgChartsModule
   ],
   declarations: [
     WelcomeComponent,
