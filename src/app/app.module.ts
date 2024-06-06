@@ -33,6 +33,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from './service/environments/environments';
+import { NgChartsModule } from 'ng2-charts';
 registerLocaleData(vi);
 
 @NgModule({
@@ -71,6 +72,7 @@ registerLocaleData(vi);
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    NgChartsModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: vi_VN },

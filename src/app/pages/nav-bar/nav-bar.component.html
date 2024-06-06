@@ -3,30 +3,30 @@
   </div>
   <ul nz-menu nzTheme="light" nzMode="inline">
     <li nz-menu-item [nzSelected]="selectedNavItem === 'dashboard'" routerLink="/admin">
-      <span nz-icon nzType="file"></span>
+      <span nz-icon nzType="pie-chart"></span>
       <span >Dashboard</span>
     </li>
-    <li nz-submenu nzTitle="Quản lý lịch khám" nzIcon="user" [nzOpen]="isOpen === 'shedule'">
+    <li nz-submenu nzTitle="Quản lý lịch khám" nzIcon="schedule" [nzOpen]="isOpen === 'shedule'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listShedule'" routerLink="/admin/list-shedule">Danh sách lịch khám</li>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'createShedule'" routerLink="/admin/create-shedule">Tạo lịch khám mới</li>
       </ul>
     </li>
-    <li nz-submenu nzTitle="Quản lý hóa đơn" nzIcon="user" [nzOpen]="isOpen === 'order'">
+    <li nz-submenu nzTitle="Quản lý hóa đơn" nzIcon="credit-card" [nzOpen]="isOpen === 'order'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listOrder'" routerLink="/admin/list-order">Danh sách hóa đơn</li>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'createOrder'" routerLink="/admin/create-order">Tạo hóa đơn</li>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'changeOrder'" routerLink="/admin/change-order">Chỉnh sửa hóa đơn</li>
       </ul>
     </li>
-    <li nz-submenu nzTitle="Quản lý bệnh án" nzIcon="user" [nzOpen]="isOpen === 'record'">
+    <li nz-submenu nzTitle="Quản lý bệnh án" nzIcon="medicine-box" [nzOpen]="isOpen === 'record'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listRecord'" routerLink="/admin/list-medical-record">Danh sách bệnh án</li>
         <!-- <li nz-menu-item [nzSelected]="selectedNavItem === 'createRecord'" routerLink="/admin/create-medical-record">Tạo bệnh án mới</li>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'changeRecord'" routerLink="/admin/change-medical-record">Chỉnh sửa bệnh án</li> -->
       </ul>
     </li>
-    <li nz-submenu nzTitle="Quản lý dịch vụ" nzIcon="user" [nzOpen]="isOpen === 'service'">
+    <li nz-submenu nzTitle="Quản lý dịch vụ" nzIcon="unordered-list" [nzOpen]="isOpen === 'service'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listService'" routerLink="/admin/list-service">Danh sách dịch vụ</li>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'createService'" routerLink="/admin/create-service">Tạo dịch vụ mới</li>
@@ -39,7 +39,7 @@
         <li nz-menu-item [nzSelected]="selectedNavItem === 'sheduleDoctor'" routerLink="/admin/shedule-doctor">Lịch làm việc bác sỹ</li>
       </ul>
     </li>
-    <li nz-submenu nzTitle="Quản lý chuyên khoa" nzIcon="user" [nzOpen]="isOpen === 'specialist'">
+    <li nz-submenu nzTitle="Quản lý khoa" nzIcon="unordered-list" [nzOpen]="isOpen === 'specialist'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listSpecialist'" routerLink="/admin/list-specialist" >Danh sách khoa</li>
       </ul>
@@ -51,5 +51,8 @@
         <li nz-menu-item [nzSelected]="selectedNavItem === 'userRole'" routerLink="/admin/user-role">Phân quyền</li>
       </ul>
     </li>
-    <li nz-menu-item (click)="logOut()">Đăng xuất</li>
+    <li nz-menu-item (click)="logOut()">
+      <span nz-icon nzType="logout" nzTheme="outline"></span>
+      <span>Đăng xuất</span>
+    </li>
   </ul>

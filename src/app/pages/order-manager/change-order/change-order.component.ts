@@ -27,6 +27,7 @@ export class ChangeOrderComponent {
   isChangeInfo = false;
   inputSearch: string = '';
   serviceSearch: string = '';
+  isDisabled: boolean = true;
   orderItem: Order = {
     orderId: '',
     orderDate: '',
@@ -79,6 +80,9 @@ export class ChangeOrderComponent {
         return
       }
       if (response.body.code == 200) {
+        if(response.body.data.status == '0'){
+          this.isDisabled = false
+        }
         console.log(response.body.data)
         this.orderItem = response.body.data
         this.listOfData = response.body.data.orderService.map((item: { service: any; quantity: any; })=> ({
@@ -90,6 +94,7 @@ export class ChangeOrderComponent {
     })
   }
   searchService() {
+    this.isDisabled = true
     this.appService.getById<any>(this.serviceSearch, '/services').subscribe(response => {
       if (!response.body) {
         return
@@ -115,6 +120,7 @@ export class ChangeOrderComponent {
   createOrder() {
     if (this.orderItem.patient.id && this.listOfData.length != 0) {
       const body = {
+        status: '0',
         totalAmount: this.orderItem.totalAmount,
         discount: this.orderItem.discount,
         orderService: this.listOfData.map(item => ({
@@ -124,12 +130,13 @@ export class ChangeOrderComponent {
         patient: this.orderItem.patient.id,
       }
       console.log(body)
-      this.appService.post<any, any>(body, '/orders').subscribe(response => {
+      this.appService.update<any, any>(body, `/orders/${this.inputSearch}`).subscribe(response => {
         if (!response.body) {
           return
         }
-        if (response.body.code == 201) {
-          this.message.create('success', 'Tạo hóa đơn thành công')
+        if (response.body.code == 200) {
+          this.isDisabled = false
+          this.message.create('success', 'Chỉnh sửa hóa đơn thành công')
           this.isChangeInfo = false;
         }
       })
@@ -137,6 +144,23 @@ export class ChangeOrderComponent {
       this.message.create('error', 'Vui lòng nhập đầy đủ thông tin')
     
     }
+  }
+
+  comfimPayment() {
+    const body = {
+      status: '1'
+    }
+    console.log(body)
+    this.appService.update<any, any>(body, `/orders/${this.inputSearch}`).subscribe(response => {
+      if (!response.body) {
+        return
+      }
+      if (response.body.code == 200) {
+        this.isDisabled = true
+        this.message.create('success', 'Xác nhận đã thanh toán thành công')
+        this.isChangeInfo = false;
+      }
+    })
   }
 
   ngOnInit(): void {

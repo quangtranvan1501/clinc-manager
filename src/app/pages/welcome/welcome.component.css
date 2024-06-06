@@ -68,3 +68,7 @@ button{
     font-weight: 600;
     font-size: 18px;
 }
+.chartItem{
+    margin: 20px 0;
+    padding: 0 20px;
+}

@@ -47,7 +47,8 @@ import { ListOrderComponent } from '../order-manager/list-order/list-order.compo
 import { CreateOrderComponent } from '../order-manager/create-order/create-order.component';
 import { ChangeOrderComponent } from '../order-manager/change-order/change-order.component';
 import { ListSpecialistComponent } from '../specialist-manager/list-specialist/list-specialist.component';
-
+import { NgChartsModule } from 'ng2-charts';
+import { HighchartsChartModule } from 'highcharts-angular';
 @NgModule({
   imports: [
     WelcomeRoutingModule,
@@ -77,6 +78,8 @@ import { ListSpecialistComponent } from '../specialist-manager/list-specialist/l
     NzTagModule,
     NzSelectModule,
     NzTimePickerModule,
+    NgChartsModule,
+    HighchartsChartModule
   ],
   declarations: [
     WelcomeComponent,

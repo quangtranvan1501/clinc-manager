@@ -1,15 +1,29 @@
 <nz-layout class="layout">
   <nz-sider>
     <app-nav-bar routerNav="dashboard"></app-nav-bar>
-</nz-sider>
-<nz-layout class="right-layout">
+  </nz-sider>
+  <nz-layout class="right-layout">
     <nz-header>
-        <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+      <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
     </nz-header>
     <nz-content>
       <div class="inner-content">
         <div class="titlePage">
           Dashboard
+        </div>
+        <div nz-row>
+          <div nz-col nzSpan="12" class="chartItem">
+            <div id="chart3"></div>
+          </div>
+          <div nz-col nzSpan="12" class="chartItem">
+            <div id="chart4"></div>
+          </div>
+          <div nz-col nzSpan="12" class="chartItem">
+            <div id="chart1"></div>            
+          </div>
+          <div nz-col nzSpan="12" class="chartItem">
+            <div id="chart2"></div>            
+          </div>
         </div>
       </div>
     </nz-content>
