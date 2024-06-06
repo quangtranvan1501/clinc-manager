@@ -3,6 +3,7 @@ import { FormControl, FormGroup, NonNullableFormBuilder, ValidatorFn, Validators
 import { AuthService } from '../service/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
+import { AppService } from '../service/app.service';
 
 @Component({
   selector: 'app-login',
@@ -29,24 +30,30 @@ export class LoginComponent {
   submitForm(): void {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
-      const userName = this.validateForm.value.userName;
+      const email = this.validateForm.value.userName;
       const password = this.validateForm.value.password;
-      if (userName && password) {
-        this.isLoading = true;
-        this.authService.login(userName, password).subscribe(response => {
+      this.isLoading = true;
+      if (email && password) {
+        this.appService.postOption<any, any>({ email, password }, '/auth/login').subscribe(response => {
           if (!response.body) {
-            this.isLoading = false;
             return this.message.error('Unknown error occurred.');
           }
           if (response.body.code == 200) {
-            this.isLoading = false;
-            if(response.body.data.user.role == 'admin'){
-              this.router.navigate(['/admin']);
-              return this.message.success(response.body.message)
-            } else{
+            if (response.body.data.user.role == 'admin') {
+              if (!response.body) {
+                return this.router.navigate(['/login']);
+              }
+              if (response.body.data) {
+                localStorage.setItem('currentUser', JSON.stringify(response.body.data.user));
+                localStorage.setItem('accesstoken', JSON.stringify(response.body.data.tokens.access.token));
+                localStorage.setItem('expirestoken', JSON.stringify(response.body.data.tokens.access.expires));
+                this.router.navigate(['/admin']);
+                return this.message.success(response.body.message)
+              }
+            } else {
               return this.message.error('Đăng nhập không thành công')
-            
             }
+            this.isLoading = false;
           }
           if (response.body.message) {
             this.isLoading = false;
@@ -61,9 +68,12 @@ export class LoginComponent {
               return this.message.error(error.error.message);
             }
             return this.message.error('Đã có lỗi xảy ra vui lòng thử lại');
+
           }
         );
-        this.isLoading = false;
+        // setTimeout(() => {
+        //   this.isLoading = false;
+        // }, 1000);
       }
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
@@ -77,6 +87,7 @@ export class LoginComponent {
 
   constructor(
     private fb: NonNullableFormBuilder,
+    private appService: AppService,
     private authService: AuthService,
     private message: NzMessageService,
     private router: Router,

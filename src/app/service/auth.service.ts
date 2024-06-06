@@ -31,12 +31,12 @@ export class AuthService {
     return this.appService.postOption<any, any>({ email, password }, '/auth/login')
       .pipe(
         tap(response => {
-          if (!response.body) {
-            return this.router.navigate(['/login']);
-          }
-          localStorage.setItem('currentUser', JSON.stringify(response.body.data.user));
-          localStorage.setItem('accesstoken', JSON.stringify(response.body.data.tokens.access.token));
-          localStorage.setItem('expirestoken', JSON.stringify(response.body.data.tokens.access.expires));
+          // if (!response.body) {
+          //   return this.router.navigate(['/admin/login']);
+          // }
+          // localStorage.setItem('currentUser', JSON.stringify(response.body.data.user));
+          // localStorage.setItem('accesstoken', JSON.stringify(response.body.data.tokens.access.token));
+          // localStorage.setItem('expirestoken', JSON.stringify(response.body.data.tokens.access.expires));
           this.loggedIn = true;
           return response; // Add this line to return the response
         }),

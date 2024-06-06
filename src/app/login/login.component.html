@@ -1,5 +1,5 @@
 <ng-container>
-    <nz-spin nzTip="Đang xử lý!" [nzSpinning]="isLoading">
+    <!-- <nz-spin nzTip="Đang xử lý!" [nzSpinning]="isLoading"> -->
         <div class="login-page">
             <div class="wapper" nz-row>
                 <div class="login-logo" nz-col>
@@ -31,11 +31,11 @@
                                     (click)="passwordVisible = !passwordVisible"></span>
                             </ng-template>
                         </nz-form-item>
-                        <button nz-button class="login-form-button login-form-margin " nzSize="large" nz-margin="0 10px 0 0"
+                        <button nz-button class="login-form-button login-form-margin" nzSize="large" nz-margin="0 10px 0 0" [nzLoading]="isLoading"
                             nzType="primary">Đăng nhập</button>
                     </ng-container>
                 </form>
             </div>
         </div>
-    </nz-spin>
+    <!-- </nz-spin> -->
 </ng-container>
