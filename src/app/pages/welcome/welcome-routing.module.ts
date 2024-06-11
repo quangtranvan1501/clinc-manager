@@ -18,27 +18,30 @@ import { ListOrderComponent } from '../order-manager/list-order/list-order.compo
 import { CreateOrderComponent } from '../order-manager/create-order/create-order.component';
 import { ChangeOrderComponent } from '../order-manager/change-order/change-order.component';
 import { ListSpecialistComponent } from '../specialist-manager/list-specialist/list-specialist.component';
+import { ChatComponent } from '../chat/chat.component';
+import { authGuard } from 'src/app/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: WelcomeComponent },
-  { path: 'list-user', component: UserListComponent},
-  { path: 'create-user', component: CreateUserComponent},
-  { path: 'user-role', component: UserRoleComponent},
-  { path: 'list-doctor', component: ListDoctorComponent},
-  { path: 'create-doctor', component: CreateDoctorComponent},
-  { path: 'shedule-doctor', component: SheduleDoctorComponent},
-  { path: 'change-medical-record', component: ChangeMedicalRecordComponent},
-  { path: 'list-medical-record', component: ListMedicalRecordComponent},
-  { path: 'create-medical-record', component: CreateMedicalRecordComponent},
-  { path: 'list-service', component: ListServiceComponent},
-  { path: 'create-service', component: CreateServiceComponent},
-  { path: 'list-shedule', component: ListSheduleComponent},
-  { path: 'create-shedule', component: CreateSheduleComponent},
-  { path: 'list-order', component: ListOrderComponent},
-  { path: 'create-order', component: CreateOrderComponent},
-  { path: 'change-order', component: ChangeOrderComponent},
-  { path: 'change-order/:orderId', component: ChangeOrderComponent},
-  { path: 'list-specialist', component: ListSpecialistComponent},
+  { path: '', component: WelcomeComponent , canActivate: [authGuard]},
+  { path: 'list-user', component: UserListComponent, canActivate: [authGuard]},
+  { path: 'create-user', component: CreateUserComponent, canActivate: [authGuard]},
+  { path: 'user-role', component: UserRoleComponent, canActivate: [authGuard]},
+  { path: 'list-doctor', component: ListDoctorComponent, canActivate: [authGuard]},
+  { path: 'create-doctor', component: CreateDoctorComponent, canActivate: [authGuard]},
+  { path: 'shedule-doctor', component: SheduleDoctorComponent, canActivate: [authGuard]},
+  { path: 'change-medical-record', component: ChangeMedicalRecordComponent, canActivate: [authGuard]},
+  { path: 'list-medical-record', component: ListMedicalRecordComponent, canActivate: [authGuard]},
+  { path: 'create-medical-record', component: CreateMedicalRecordComponent, canActivate: [authGuard]},
+  { path: 'list-service', component: ListServiceComponent, canActivate: [authGuard]},
+  { path: 'create-service', component: CreateServiceComponent, canActivate: [authGuard]},
+  { path: 'list-shedule', component: ListSheduleComponent, canActivate: [authGuard]},
+  { path: 'create-shedule', component: CreateSheduleComponent, canActivate: [authGuard]},
+  { path: 'list-order', component: ListOrderComponent, canActivate: [authGuard]},
+  { path: 'create-order', component: CreateOrderComponent, canActivate: [authGuard]},
+  { path: 'change-order', component: ChangeOrderComponent, canActivate: [authGuard]},
+  { path: 'change-order/:orderId', component: ChangeOrderComponent, canActivate: [authGuard]},
+  { path: 'list-specialist', component: ListSpecialistComponent, canActivate: [authGuard]},
+  { path: 'chat', component: ChatComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({

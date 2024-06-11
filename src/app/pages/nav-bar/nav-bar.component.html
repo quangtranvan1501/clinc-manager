@@ -6,6 +6,10 @@
       <span nz-icon nzType="pie-chart"></span>
       <span >Dashboard</span>
     </li>
+    <li nz-menu-item [nzSelected]="selectedNavItem === 'chat'" routerLink="/admin/chat">
+      <span nz-icon nzType="pie-chart"></span>
+      <span >Tư vấn khách hàng</span>
+    </li>
     <li nz-submenu nzTitle="Quản lý lịch khám" nzIcon="schedule" [nzOpen]="isOpen === 'shedule'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listShedule'" routerLink="/admin/list-shedule">Danh sách lịch khám</li>

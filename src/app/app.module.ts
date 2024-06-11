@@ -33,8 +33,10 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from './service/environments/environments';
-import { NgChartsModule } from 'ng2-charts';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 registerLocaleData(vi);
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ registerLocaleData(vi);
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    NgChartsModule,
+    SocketIoModule.forRoot(config)
+
   ],
   providers: [
     { provide: NZ_I18N, useValue: vi_VN },

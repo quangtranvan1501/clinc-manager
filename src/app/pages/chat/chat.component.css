@@ -1,0 +1,124 @@
+.layout {
+    min-height: 100vh;
+}
+
+nz-sider {
+    overflow: auto;
+    height: 100%;
+    position: fixed;
+    left: 0;
+}
+
+.right-layout {
+    margin-left: 200px;
+}
+
+nz-header {
+    background: #fff;
+    padding: 0;
+}
+
+.tiletHeader{
+    font-size: 18px;
+    font-weight: 700;
+    color: rgb(8, 84, 44);
+    padding-left: 20px;
+}
+
+nz-content {
+    margin: 24px 16px 0;
+    overflow: initial;
+}
+
+.inner-content {
+    padding: 24px;
+    background: #fff;
+}
+
+nz-footer {
+    text-align: center;
+}
+
+.ant-layout-sider{
+    background: white;
+}
+.titlePage {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(8, 84, 44);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.chat-container {
+    max-width: 70%;
+    margin: 0 auto;
+}
+
+.messages {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 400px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.message {
+    padding: 5px;
+    margin: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+nz-input-group{
+    width: 100%;
+    box-shadow: 0 0 10px #ccc;
+}
+.tvvItem{
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+.listTVV{
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+    padding: 20px;
+}
+.avatar{
+    margin-right: 10px;
+}
+.titleTVV{
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+.tvvs{
+    padding: 0 !important;
+}
+.sent {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    text-align: right;
+    display: inline;
+    border-radius: 8px;
+    padding: 8px;
+
+}
+
+.received {
+    background-color: #f1f0f0;
+    align-self: flex-start;
+    text-align: left;
+    display: inline;
+    border-radius: 8px;
+    padding: 8px;
+}
