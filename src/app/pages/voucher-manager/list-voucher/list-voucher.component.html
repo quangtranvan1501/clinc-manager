@@ -1,0 +1,185 @@
+<nz-layout class="layout">
+    <nz-sider>
+        <app-nav-bar routerNav="listVoucher" isSub="voucher"></app-nav-bar>
+    </nz-sider>
+    <nz-layout class="right-layout">
+        <nz-header>
+            <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <div class="titlePage">
+                    Quản lý Voucher
+                    <div>
+                        <button nz-button nzType="primary" (click)="showModelCreate()"><span nz-icon nzType="plus"
+                                nzTheme="outline"></span> Tạo mới</button>
+                    </div>
+                </div>
+                <div class="searchUser">
+                    <div class="searchTitle">Tìm kiếm</div>
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="width: 400px;">
+                        <input type="text" nz-input placeholder="Mã voucher" [(ngModel)]="inputSearch" (keyup.enter)="searchVoucher()"/>
+                    </nz-input-group>
+                    <ng-template #suffixIconButton>
+                        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search" (click)="searchVoucher()"></span></button>
+                    </ng-template>
+                </div>
+                <nz-table #basicTable [nzData]="listOfData" [nzBordered]="true" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+                            <th nxWidth="60px">STT</th>
+                            <th>Mã code</th>
+                            <th>Thời hạn</th>
+                            <th>Số lượng</th>
+                            <th>Loại</th>
+                            <th>Giảm giá</th>
+                            <th>Đã dùng</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data; let index = index">
+                            <td>{{ index + 1 + (pageIndex - 1) * pageSize}}</td>
+                            <td>{{ data.code }}</td>
+                            <td>{{ data.expirationDate | date : 'dd/MM/YYYY HH:mm' }}</td>
+                            <td>{{ data.maxUsage }}</td>
+                            <td>
+                                <nz-tag *ngIf="data.type === 'percent'" nzColor="success">Phần trăm</nz-tag>
+                                <nz-tag *ngIf="data.type === 'amount'" nzColor="success">Tiền</nz-tag>
+                            </td>
+                            <td>{{ data.discount }}</td>
+                            <td>{{ data.usageCount }}</td>
+                            <td>
+                                <button nz-button nzType="primary" nzSize="small" (click)="showModal(data)">Chỉnh
+                                    sửa</button>
+                                <button nz-button nzDanger nzSize="small" (click)="confirmDelete(data)">Xóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div class="pagination">
+                    <nz-pagination [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="total"
+                        [nzShowTotal]="rangeTemplate" (nzPageIndexChange)="changePageIndex($event)"></nz-pagination>
+                    <ng-template #rangeTemplate let-range="range" let-total>
+                        {{ range[0] }}-{{ range[1] }} of {{ total }} khoa
+                    </ng-template>
+                </div>
+            </div>
+        </nz-content>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+</nz-layout>
+
+<nz-modal nzWidth="50%" [(nzVisible)]="isChangeInfo" nzTitle="Thông tin voucher" [nzFooter]="modalFooter"
+    (nzOnCancel)="cancel()">
+    <ng-container *nzModalContent>
+        <form nz-form nz-row nzJustify="start" [formGroup]="validateFormRegister">
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Mã Voucher</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input nz-input formControlName="code" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Số lượng</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input type="number" nz-input formControlName="maxUsage" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Giảm giá</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input nz-input formControlName="discount" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Loại</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-radio-group formControlName="type">
+                            <label nz-radio nzValue="percent">Giảm phần trăm</label>
+                            <label nz-radio nzValue="amount">Giảm tiền</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Thời hạn</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-date-picker nzFormat="dd/MM/yyyy HH:mm"
+                             formControlName="expirationDate"
+                            [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }"></nz-date-picker>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+        </form>
+    </ng-container>
+    <ng-template #modalFooter>
+        <button nz-button nzType="primary" nzDanger (click)="cancel()">Hủy</button>
+        <button nz-button nzType="primary" (click)="changeUser()" [nzLoading]="isConfirmLoading">Thay đổi</button>
+    </ng-template>
+</nz-modal>
+
+<nz-modal nzWidth="50%" [(nzVisible)]="isCreate" nzTitle="Thêm mới voucher" [nzFooter]="modalFooter2"
+    (nzOnCancel)="cancel()">
+    <ng-container *nzModalContent>
+        <form nz-form nz-row nzJustify="start" [formGroup]="validateFormRegister">
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Mã Voucher</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input nz-input formControlName="code" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Số lượng</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input type="number" nz-input formControlName="maxUsage" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Giảm giá</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <input nz-input formControlName="discount" />
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Loại</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-radio-group formControlName="type">
+                            <label nz-radio nzValue="percent">Giảm phần trăm</label>
+                            <label nz-radio nzValue="amount">Giảm tiền</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="12">
+                <div nz-row>
+                    <nz-form-label [nzSpan]="9" nzRequired>Thời hạn</nz-form-label>
+                    <nz-form-control [nzSpan]="15">
+                        <nz-date-picker nzFormat="dd/MM/yyyy HH:mm"
+                             formControlName="expirationDate"
+                            [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }"></nz-date-picker>
+                    </nz-form-control>
+                </div>
+            </nz-form-item>
+        </form>
+    </ng-container>
+    <ng-template #modalFooter2>
+        <button nz-button nzType="primary" nzDanger (click)="cancelCreate()">Hủy</button>
+        <button nz-button nzType="primary" (click)="createVoucher()" [nzLoading]="isConfirmLoading">Tạo mới</button>
+    </ng-template>
+</nz-modal>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder, ValidatorFn, Validators } from '@angular/forms';
+import { error } from 'highcharts';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Specialist } from 'src/app/@types';
 import { AppService } from 'src/app/service/app.service';
@@ -82,13 +83,19 @@ export class CreateDoctorComponent implements OnInit {
           return this.message.error('Unknown error occurred.');
         }
         if (response.body.code == 201) {
+          this.validateFormRegister.reset();
           return this.message.success(response.body.message)
         }
         if (response.body && response.body.message) {
           return this.message.error(response.body.message);
         }
         return this.message.error('Unknown error occurred.');
-      })
+      }, error => {
+        if (error.error && error.error.message) {
+          return this.message.error(error.error.message);
+        }
+        return this.message.error('Đã có lỗi xảy ra vui lòng thử lại');
+      });
     } else {
       Object.values(this.validateFormRegister.controls).forEach(control => {
         if (control.invalid) {
@@ -100,12 +107,12 @@ export class CreateDoctorComponent implements OnInit {
   }
 
   getSpectialist() {
-    this.appService.find<any>('/specialist').subscribe(response => {
+    this.appService.find<any>('/specialist/getAllSpecialists').subscribe(response => {
       if (!response.body) {
         return;
       }
       if (response.body.code == 200) {
-        this.specialistList.push(...response.body.data.results);
+        this.specialistList.push(...response.body.data);
       }
     });
   }

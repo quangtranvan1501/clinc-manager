@@ -16,8 +16,6 @@ nz-sider {
 nz-header {
     background: #fff;
     padding: 0;
-    display: flex;
-    justify-content: space-between;
 }
 
 .tiletHeader{
@@ -69,11 +67,4 @@ button{
     margin-right: 18px;
     font-weight: 600;
     font-size: 18px;
-}
-.chartItem{
-    margin: 20px 0;
-    padding: 0 20px;
-}
-.notifi{
-    margin: 8px;
 }

@@ -1,6 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AppService } from 'src/app/service/app.service';
+import { ChatV2Service } from 'src/app/service/chat-v2.service';
 import { ChatService } from 'src/app/service/chat.service';
 
 @Component({
@@ -14,14 +16,19 @@ export class ChatComponent {
   user:any;
   userId: string = '';
   tvvs: any[] = [];
+  chatId: string = '';
 
   selectTVV(ttv: any): void {
     this.userId = ttv.userId;
+    this.chatId = this.chatV2Service.generateChatID(this.user.userId, this.userId);
+    this.getMessagesV2();
   }
 
   constructor(
     private chatService: ChatService,
-    private appService: AppService
+    private appService: AppService,
+    private chatV2Service: ChatV2Service,
+    private route: ActivatedRoute
   ) { }
 
   sendMessage(): void {
@@ -30,6 +37,25 @@ export class ChatComponent {
       to: this.userId
     });
     this.message = '';
+  }
+
+  sendMessageV2(): void {
+    const message = {
+      senderID: this.user.userId,
+      receiverID: this.userId,
+      username: this.user.username,
+      message: this.message,
+      timestamp: Date.now()
+    };
+    this.chatV2Service.sendMessage(this.chatId, message);
+    this.message = '';
+  }
+
+  getMessagesV2(): void {
+    this.chatV2Service.getMessages(this.chatId, 10).subscribe(messages => {
+      this.messages = Object.values(messages);
+      this.messages.reverse();
+    });
   }
 
   getMessages(): void {
@@ -42,13 +68,14 @@ export class ChatComponent {
   }
 
   ngOnInit(): void {
-    if (!localStorage.getItem('currentUser')) {
+    if (!sessionStorage.getItem('currentUser')) {
       return;
     }
-    this.user = JSON.parse(localStorage.getItem('currentUser') ?? '{}');
+    this.user = JSON.parse(sessionStorage.getItem('currentUser') ?? '{}');
 
     this.chatService.addUser(this.user.userId, this.user.role);
-    this.getMessages();
+    // this.getMessages();
+    // this.getMessagesV2();
     let params = new HttpParams();
     params = params.append('role', 'user');
     params = params.append('page', '1');
@@ -57,6 +84,12 @@ export class ChatComponent {
     this.appService.getOption<any>(params, '/message/onlineUsers').subscribe((res: any) => {
       this.tvvs = res.body;
       console.log(this.tvvs);
+    });
+
+    this.route.params.subscribe(params => {
+      console.log(params['userId']);
+      this.userId = params['userId'];
+      this.selectTVV({userId: this.userId})
     });
   }
 }

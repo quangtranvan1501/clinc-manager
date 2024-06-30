@@ -5,6 +5,9 @@
     <nz-layout class="right-layout">
         <nz-header>
             <div class="tiletHeader">Trang quản lý phòng phám đa khoa Thái Thịnh</div>
+            <div class="notifi">
+                <app-notifications></app-notifications>
+              </div>
         </nz-header>
         <nz-content>
             <div class="inner-content" nz-row>
@@ -17,7 +20,7 @@
                 <div class="listTVV" nz-col nzSpan="4">
                     <div class="titleTVV">Danh sách khách hàng</div>
                     <ul nz-menu nzMode="inline">
-                        <li class="tvvs" nz-menu-item *ngFor="let tvv of tvvs">
+                        <li class="tvvs" nz-menu-item *ngFor="let tvv of tvvs" (click)="selectTVV(tvv)">
                             <div class="tvvItem">
                                 <div class="avatar">
                                     <nz-avatar nzIcon="user" style="background-color:rgb(8, 84, 44);"></nz-avatar>
@@ -31,15 +34,15 @@
                 </div>
                 <div class="chat-container" nz-col nzSpan="20">
                     <div class="messages">
-                        <div *ngFor="let message of messages" class="message" [ngClass]="{ 'sent': message.from == userId, 'received': message.from != userId }">
+                        <div *ngFor="let message of messages" class="message" [ngClass]="{ 'sent': message.senderID == user.userId, 'received': message.senderID != user.userId }">
                             {{message.message}}
                         </div>
                     </div>
                     <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-                        <input type="text" nz-input [(ngModel)]="message" />
+                        <input type="text" nz-input [(ngModel)]="message" (keydown.enter)="sendMessageV2()"/>
                     </nz-input-group>
                     <ng-template #suffixIconButton>
-                        <button nz-button nzType="primary" nzSearch (click)="sendMessage()"><span nz-icon
+                        <button nz-button nzType="primary" nzSearch (click)="sendMessageV2()"><span nz-icon
                                 nzType="send"></span></button>
                     </ng-template>
                 </div>

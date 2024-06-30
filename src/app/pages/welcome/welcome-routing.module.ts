@@ -20,6 +20,7 @@ import { ChangeOrderComponent } from '../order-manager/change-order/change-order
 import { ListSpecialistComponent } from '../specialist-manager/list-specialist/list-specialist.component';
 import { ChatComponent } from '../chat/chat.component';
 import { authGuard } from 'src/app/auth.guard';
+import { ListVoucherComponent } from '../voucher-manager/list-voucher/list-voucher.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent , canActivate: [authGuard]},
@@ -42,6 +43,8 @@ const routes: Routes = [
   { path: 'change-order/:orderId', component: ChangeOrderComponent, canActivate: [authGuard]},
   { path: 'list-specialist', component: ListSpecialistComponent, canActivate: [authGuard]},
   { path: 'chat', component: ChatComponent, canActivate: [authGuard]},
+  { path: 'chat/:userId', component: ChatComponent, canActivate: [authGuard]},
+  { path: 'voucher', component: ListVoucherComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({

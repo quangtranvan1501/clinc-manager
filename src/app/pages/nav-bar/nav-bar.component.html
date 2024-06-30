@@ -48,6 +48,11 @@
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listSpecialist'" routerLink="/admin/list-specialist" >Danh sách khoa</li>
       </ul>
     </li>
+    <li nz-submenu nzTitle="Quản lý voucher" nzIcon="dollar-circle" [nzOpen]="isOpen === 'voucher'">
+      <ul>
+        <li nz-menu-item [nzSelected]="selectedNavItem === 'listVoucher'" routerLink="/admin/voucher" >Danh sách voucher</li>
+      </ul>
+    </li>
     <li nz-submenu nzTitle="Quản lý tài khoản" nzIcon="user" [nzOpen]="isOpen === 'user'">
       <ul>
         <li nz-menu-item [nzSelected]="selectedNavItem === 'listUser'" routerLink="/admin/list-user">Danh sách tài khoản</li>

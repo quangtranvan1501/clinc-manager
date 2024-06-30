@@ -1,0 +1,8 @@
+::ng-deep nz-list-item{
+    border-bottom: 1px solid #8e8e8e !important;
+}
+
+.notification{
+    color: #333;
+    font-weight: 700;
+}

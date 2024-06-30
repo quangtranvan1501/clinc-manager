@@ -6,6 +6,7 @@ import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import jwt_decode from 'jwt-decode';
 import {  Router } from '@angular/router';
 import { User } from '../@types';
+import { MessagingService } from './messaging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +19,10 @@ export class AuthService {
     private http: HttpClient,
     private appService: AppService,
     private router: Router,
-
+    private messagingService: MessagingService
   ) { }
   getToken(): string | null {
-    let token = localStorage.getItem('accesstoken');
+    let token = sessionStorage.getItem('accesstoken');
     if (token) {
       token = token.replace(/(^"|"$)/g, ''); // Loại bỏ dấu ngoặc kép ở đầu và cuối
     }
@@ -31,12 +32,6 @@ export class AuthService {
     return this.appService.postOption<any, any>({ email, password }, '/auth/login')
       .pipe(
         tap(response => {
-          // if (!response.body) {
-          //   return this.router.navigate(['/admin/login']);
-          // }
-          // localStorage.setItem('currentUser', JSON.stringify(response.body.data.user));
-          // localStorage.setItem('accesstoken', JSON.stringify(response.body.data.tokens.access.token));
-          // localStorage.setItem('expirestoken', JSON.stringify(response.body.data.tokens.access.expires));
           this.loggedIn = true;
           return response; // Add this line to return the response
         }),
@@ -47,16 +42,16 @@ export class AuthService {
     return throwError(() => error); 
   }
   logout() {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('accesstoken');
-    localStorage.removeItem('expirestoken')
+    sessionStorage.removeItem('currentUser');
+    sessionStorage.removeItem('accesstoken');
+    sessionStorage.removeItem('expirestoken')
     this.router.navigate(['/']);
     this.loggedIn = false;
   }
 
   isLoggedIn() {
-    const expirestoken = localStorage.getItem('expirestoken');
-    const accesstoken= localStorage.getItem('accesstoken')
+    const expirestoken = sessionStorage.getItem('expirestoken');
+    const accesstoken= sessionStorage.getItem('accesstoken')
     try {
       if(accesstoken){
         const decodedToken: any = jwt_decode(accesstoken);
@@ -88,9 +83,9 @@ export class AuthService {
           const user = response.body?.data?.user;
           const tokens = response.body?.data?.tokens;
           if (user && tokens) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            localStorage.setItem('accesstoken', tokens.access.token);
-            localStorage.setItem('expirestoken', tokens.access.expires);
+            sessionStorage.setItem('currentUser', JSON.stringify(user));
+            sessionStorage.setItem('accesstoken', tokens.access.token);
+            sessionStorage.setItem('expirestoken', tokens.access.expires);
             this.loggedIn = true;
           }
         }),
@@ -102,6 +97,6 @@ export class AuthService {
     return 'Bearer ' + this.getToken();
   }
   clearToken(): void {
-    localStorage.removeItem('accesstoken');
+    sessionStorage.removeItem('accesstoken');
   }
 }

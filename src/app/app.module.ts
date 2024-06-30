@@ -34,6 +34,11 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from './service/environments/environments';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { provideMessaging, getMessaging } from '@angular/fire/messaging';
+import { AngularFireModule } from '@angular/fire/compat';
+import { messaging } from './@types/firebase.conf';
 registerLocaleData(vi);
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -74,8 +79,11 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    SocketIoModule.forRoot(config)
-
+    SocketIoModule.forRoot(config),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideDatabase(() => getDatabase()),
+    // provideMessaging(() => getMessaging()),
+    // AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   providers: [
     { provide: NZ_I18N, useValue: vi_VN },
@@ -83,7 +91,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    { provide: 'messaging', useValue: messaging},
   ],
   bootstrap: [AppComponent]
 })

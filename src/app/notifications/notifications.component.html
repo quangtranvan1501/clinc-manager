@@ -1,0 +1,30 @@
+<nz-badge [nzCount]="countNotificaton" style="margin-right: 24px; border-radius: 50%;" (click)="open()">
+  <span nz-icon nzType="bell" nzTheme="outline" style="font-size: 28px;"></span>
+</nz-badge>
+<nz-drawer [nzBodyStyle]="{ overflow: 'auto' }" [nzWidth]="300" [nzVisible]="visible" nzTitle="Thông báo"
+  (nzOnClose)="close()" [nzExtra]="extra">
+  <ng-container *nzDrawerContent>
+    <nz-list nzItemLayout="horizontal">
+      <nz-list-item *ngFor="let notificaton of notifications" (click)="updateNotification(notificaton.notificationId)"
+        routerLink="/admin/chat/{{notificaton.senderId}}">
+        <nz-list-item-meta [nzDescription]="nzDescription">
+          <!-- <ng-template #nzTitle>
+              <a href="https://ng.ant.design">{{notificaton.title}}</a>
+            </ng-template> -->
+          <ng-template #nzDescription>
+            <nz-space>
+              <div [ngClass]="{'notification': notificaton.read == '0'}">{{notificaton.body}}</div>
+            </nz-space>
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </nz-list>
+    <!-- <div *ngFor="let notificaton of notifications">
+        <div>{{notificaton.body}}</div>
+
+      </div> -->
+  </ng-container>
+</nz-drawer>
+<ng-template #extra>
+  <div (click)="readAllNotification()">Đã đọc</div>
+</ng-template>

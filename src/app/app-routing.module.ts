@@ -4,8 +4,10 @@ import { LoginComponent } from './login/login.component';
 import { authGuard } from './auth.guard';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'admin', pathMatch: 'full'},
   { path: 'admin', loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule), canActivate: [authGuard]},
   { path: 'admin/login', component: LoginComponent }
+
 ];
 
 @NgModule({

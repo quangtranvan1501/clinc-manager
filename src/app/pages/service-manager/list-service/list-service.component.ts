@@ -249,12 +249,12 @@ export class ListServiceComponent implements OnInit{
 
   ngOnInit() {
     this.getService();
-    this.appService.find<any>('/specialist').subscribe(response => {
+    this.appService.find<any>('/specialist/getAllSpecialists').subscribe(response => {
       if (!response.body) {
         return;
       }
       if (response.body.code == 200) {
-        this.specialistList.push(...response.body.data.results);
+        this.specialistList.push(...response.body.data);
         // return this.message.success(res.body.message)
       }
     });

@@ -49,6 +49,12 @@ import { ChangeOrderComponent } from '../order-manager/change-order/change-order
 import { ListSpecialistComponent } from '../specialist-manager/list-specialist/list-specialist.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { ChatComponent } from '../chat/chat.component';
+import { NotificationsComponent } from 'src/app/notifications/notifications.component';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { ListVoucherComponent } from '../voucher-manager/list-voucher/list-voucher.component';
 @NgModule({
   imports: [
     WelcomeRoutingModule,
@@ -79,6 +85,10 @@ import { ChatComponent } from '../chat/chat.component';
     NzSelectModule,
     NzTimePickerModule,
     HighchartsChartModule,
+    NzDrawerModule,
+    NzBadgeModule,
+    NzListModule,
+    NzSpaceModule
   ],
   declarations: [
     WelcomeComponent,
@@ -101,7 +111,9 @@ import { ChatComponent } from '../chat/chat.component';
     CreateOrderComponent,
     ChangeOrderComponent,
     ListSpecialistComponent,
-    ChatComponent
+    ChatComponent,
+    NotificationsComponent,
+    ListVoucherComponent
   ],
   exports: [WelcomeComponent],
   providers: [

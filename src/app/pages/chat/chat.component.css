@@ -16,6 +16,8 @@ nz-sider {
 nz-header {
     background: #fff;
     padding: 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 .tiletHeader{
@@ -121,4 +123,7 @@ nz-input-group{
     display: inline;
     border-radius: 8px;
     padding: 8px;
+}
+.notifi{
+    margin: 8px;
 }
