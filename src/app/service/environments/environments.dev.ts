@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
-    // apiUrl: 'https://datn-backend-uv4e.onrender.com/v1',
-    apiUrl: 'http://localhost:3000/v1',
+    apiUrl: 'https://datn-backend-uv4e.onrender.com/v1',
+    // apiUrl: 'http://localhost:3000/v1',
     serverURL: '',
     firebaseConfig: {
       apiKey: "AIzaSyA8XAOesOOMahEaUlmFOGlZgEndaGY0Wfs",
